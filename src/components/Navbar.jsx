@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+  const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
 
   const handleLogout = () => {
@@ -14,26 +15,41 @@ const Navbar = () => {
     navigate("/")
    }
 
-  return (
-    <div className="bg-blue-600 w-screen text-white flex justify-between items-center px-8 py-4">
-        
-      <h1 className="text-xl font-semibold cursor-pointer" onClick={handleNav}>JWT Auth System</h1>
-        
+return (
+  <div className="bg-blue-600 text-white flex justify-between items-center px-8 py-4">
+    <h1 className="text-xl font-bold">JWT Auth</h1>
 
-      <div className="flex items-center gap-6">
+    {token ? (
+      <div className="flex items-center gap-5">
         <p>
-          Welcome, {user?.fullname} ({role})
+          Welcome, {user?.fullname} ({user?.role})
         </p>
-
         <button
           onClick={handleLogout}
-          className="bg-red-500 px-4 py-1 rounded hover:bg-red-600"
+          className="bg-red-500 px-4 py-1 rounded"
         >
           Logout
         </button>
       </div>
-    </div>
-  );
-};
+    ) : (
+      <div className="space-x-4">
+        <Link
+          to="/login"
+          className="bg-white text-blue-600 px-4 py-2 rounded-md"
+        >
+          Login
+        </Link>
 
-export default Navbar;
+        <Link
+          to="/register"
+          className="bg-green-500 px-4 py-2 rounded-md"
+        >
+          Register
+        </Link>
+      </div>
+    )}
+  </div>
+);
+}
+
+export default Navbar
